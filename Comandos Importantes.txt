@@ -1,0 +1,3 @@
+Dentro da Pasta bin da Instalação do MongoDB use:
+mongod.exe --dbpath=+Caminho do mongo-data
+para inicializar o servidor.

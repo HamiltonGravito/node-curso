@@ -17,13 +17,12 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', (err, cliente) => {
         });
         */
 
-        /* Conta a quantidade de registros (documentos)
+        //Conta a quantidade de registros (documentos)
         db.collection('Todos').find({ }).count().then((count) => {
             console.log(`Todos count: ${count}`);
         }, (err) => {
             console.log("Não foi possivel buscar!!!", err);
         });
 
-        */
         cliente.close();
 });
