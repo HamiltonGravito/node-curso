@@ -1,3 +1,6 @@
 Dentro da Pasta bin da Instalação do MongoDB use:
 mongod.exe --dbpath=+Caminho do mongo-data
 para inicializar o servidor.
+
+Rodar Script de Testes
+npm run nomeTesteDentroDoPackage.json
