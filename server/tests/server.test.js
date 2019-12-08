@@ -4,10 +4,19 @@ const request = require('supertest');
 const { app } = require('./../server');
 const { Todo } = require('./../models/todo');
 
+const todos = [{
+    text: "Primeiro Teste."
+}, {
+    text: "Segundo Teste."
+}]
+
 //Essa função sempre será executada antes de rodar o caso de teste e neste caso
-//ela garante que o BD esteja vazio com o metodo remove()
+//ela garante que o BD esteja vazio com o metodo remove(), porem agora ele adiciona
+//o array todos[] no BD
 beforeEach((done) =>{
-    Todo.remove({}).then(() => done());
+    Todo.remove({}).then(() => {
+        return Todo.insertMany(todos);
+    }).then(() => done());
 })
 
 //Esse caso de teste faz uma chamada POST para /todos e tem o objetivo de criar
@@ -33,7 +42,7 @@ describe('POST/todos', () => {
                 }
                 //Nesse segundo caso busca todos os objetos Todos do BD e espera-se
                 //que exista pelo menos um Todo e que este todo possua o texto da variavel text 
-                Todo.find().then((todos) => {
+                Todo.find({text}).then((todos) => {
                     expect(todos.length).toBe(1);
                     expect(todos[0].text).toBe(text);
                     done();
@@ -51,9 +60,21 @@ describe('POST/todos', () => {
                 return done(err);
             }
         Todo.find().then(todos => {
-            expect(todos.length).toBe(0);
+            expect(todos.length).toBe(2);
             done();
         }).catch((e) => done(e));
         })
+    });
+});
+
+describe('GET/todos', () => {
+    it("Obtém todos os TODOS", (done) => {
+        request(app)
+        .get('/todos')
+        .expect(200)
+        .expect((res) => {
+            expect(res.body.todos.length).toBe(2);
+        })
+        .end(done);
     });
 });
